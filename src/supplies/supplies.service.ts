@@ -4,10 +4,11 @@ import { UpdateSupplyDto } from './dto/update-supply.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Supply } from './entities/supply.entity';
 import { isValidObjectId, Model } from 'mongoose';
+import { PaginationDto } from 'src/common/pipes/dto/pagination.dto';
 
 @Injectable()
 export class SuppliesService {
-
+  //suministra
   constructor(
     @InjectModel(Supply.name)
     private readonly supplyModel: Model<Supply>
@@ -23,8 +24,15 @@ export class SuppliesService {
     }
   }
 
-  findAll() {
-    return this.supplyModel.find();
+  findAll(paginationDto: PaginationDto) {
+    const {limit=10, offset=0} = paginationDto
+    return this.supplyModel.find()
+    .limit(limit)
+    .skip(offset)
+    .sort({
+      name: 1
+    })
+    .select('-__v')
   }
 
   async findOne(id: string) {

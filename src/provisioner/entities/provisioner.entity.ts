@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 
 @Schema()
 class Contact{
+    
     @Prop({
         required: true
     })

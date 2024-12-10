@@ -4,6 +4,7 @@ import { UpdateProvisionerDto } from './dto/update-provisioner.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Provisioner } from './entities/provisioner.entity';
 import { isValidObjectId, Model } from 'mongoose';
+import { PaginationDto } from 'src/common/pipes/dto/pagination.dto';
 
 @Injectable()
 export class ProvisionerService {
@@ -23,8 +24,15 @@ export class ProvisionerService {
     }
   }
 
-  findAll() {
-    return this.provisionerModel.find();
+  findAll(paginationDto: PaginationDto) {
+    const {limit=10, offset=0} = paginationDto
+    return this.provisionerModel.find()
+    .limit(limit)
+    .skip(offset)
+    .sort({
+      name: 1
+    })
+    .select('-__v')
   }
 
   async findOne(id: string) {

@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProvisionerService } from './provisioner.service';
 import { CreateProvisionerDto } from './dto/create-provisioner.dto';
 import { UpdateProvisionerDto } from './dto/update-provisioner.dto';
+import { PaginationDto } from 'src/common/pipes/dto/pagination.dto';
 
 @Controller('provisioner')
 export class ProvisionerController {
@@ -13,8 +14,8 @@ export class ProvisionerController {
   }
 
   @Get()
-  findAll() {
-    return this.provisionerService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.provisionerService.findAll(paginationDto);
   }
 
   @Get(':id')

@@ -2,25 +2,27 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 @Schema()
-class Contact{
-    
+class Contact {
     @Prop({
         required: true
     })
-    cell_phone: number
+    cell_phone: number;
+
     @Prop({
         required: true
     })
-    email: string
+    email: string;
+
     @Prop({
         required: true
     })
-    address: string
+    address: string;
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);
 
-export class Provisioner extends Document{
+@Schema()
+export class Provisioner extends Document {
     @Prop({
         required: true
     })
@@ -30,11 +32,12 @@ export class Provisioner extends Document{
         required: true
     })
     lastname: string;
+
     @Prop({
         type: ContactSchema,
         required: true
     })
-    contact: Contact
+    contact: Contact;
 }
 
 export const ProvisionerSchema = SchemaFactory.createForClass(Provisioner);

@@ -5,13 +5,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
 
   constructor(
     @InjectModel(User.name)
-    private readonly userModel:Model<User>
+    private readonly userModel:Model<User>,
+    private readonly jwtService: JwtService
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -21,7 +24,10 @@ export class AuthService {
         ...userData,
         password: bcrypt.hashSync(password, 10),
       });
-      return user;
+      return {
+        user,
+        token:this.getJwtToken({email: user.email})
+      }
     } catch(error){
       this.handleExceptions(error);
     }
@@ -43,25 +49,15 @@ export class AuthService {
     
     return {
       email: user.email,
-      password: user.password
+      password: user.password,
+      token: this.getJwtToken({email: user.email})
     }
   }
 
-  // findAll() {
-  //   return `This action returns all auth`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} auth`;
-  // }
-
-  // update(id: number, updateAuthDto: UpdateAuthDto) {
-  //   return `This action updates a #${id} auth`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} auth`;
-  // }
+  private getJwtToken(payload: JwtPayload){
+    const token = this.jwtService.sign(payload);
+    return token;
+  }
 
   private handleExceptions(error: any) {
     if (error.code === 11000) {

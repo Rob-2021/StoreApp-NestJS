@@ -8,6 +8,10 @@ export class Category extends Document{
         required: true
     })
     name:string
+
+    //one to many relationship
+    @Prop({type:[{type: String, ref:'Product'}], default:[]})
+    products: string[];
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

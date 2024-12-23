@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsInt, IsPositive, IsString, Min, MinLength } from "class-validator";
+import { IsArray, IsDate, IsInt, IsMongoId, IsOptional, IsPositive, IsString, Min, MinLength, ValidateIf } from "class-validator";
+import { Types } from "mongoose";
 
 export class CreateProductDto {
     @IsString()
@@ -22,4 +23,17 @@ export class CreateProductDto {
     @IsArray()
     @IsString({ each: true })
     tags: [string];
+
+    //user_id
+    @IsOptional()
+    @ValidateIf((obj, value) => typeof value === 'string' || value instanceof Types.ObjectId)
+    @IsMongoId()
+    user_id?: string | Types.ObjectId;
+    //user_id: string
+
+    //category_id
+    @IsOptional()
+    @ValidateIf((obj, value) => typeof value === 'string' || value instanceof Types.ObjectId)
+    @IsMongoId()
+    category_id?: string | Types.ObjectId;
 }

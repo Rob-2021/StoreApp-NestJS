@@ -6,6 +6,7 @@ import { Product } from './entities/product.entity';
 import { isValidObjectId, Model } from 'mongoose';
 import { error } from 'console';
 import { PaginationDto } from 'src/common/pipes/dto/pagination.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class ProductsService {
@@ -15,8 +16,10 @@ export class ProductsService {
     private readonly productModel: Model<Product>
   ) { }
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, user: User) {
     createProductDto.name = createProductDto.name.toLocaleLowerCase();
+    createProductDto.user_id = user.id
+
     try {
       const product = await this.productModel.create(createProductDto);
       return product;

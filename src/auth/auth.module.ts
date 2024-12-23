@@ -11,6 +11,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 @Module({
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
+  exports: [
+    PassportModule, // Exporta PassportModule para otros módulos
+    JwtModule, // Exporta JwtModule para otros módulos
+  ],
   imports: [MongooseModule.forFeature([
     {
       name: User.name,
@@ -35,7 +39,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       }
     })
   })
-  ],
-  exports:[JwtStrategy, PassportModule, JwtModule]
+  ]
 })
 export class AuthModule { }

@@ -3,6 +3,7 @@ import { ProvisionerService } from './provisioner.service';
 import { ProvisionerController } from './provisioner.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Provisioner, ProvisionerSchema } from './entities/provisioner.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [ProvisionerController],
@@ -12,6 +13,8 @@ import { Provisioner, ProvisionerSchema } from './entities/provisioner.entity';
       name:Provisioner.name,
       schema:ProvisionerSchema
     }
-  ])]
+  ]),
+  AuthModule
+]
 })
 export class ProvisionerModule {}

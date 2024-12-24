@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 @Schema()
 class Contact {
@@ -38,6 +38,10 @@ export class Provisioner extends Document {
         required: true
     })
     contact: Contact;
+
+    //Referencia a la entidad User
+    @Prop({type: Types.ObjectId, ref: 'User', required: true})
+    user_id: Types.ObjectId;
 }
 
 export const ProvisionerSchema = SchemaFactory.createForClass(Provisioner);

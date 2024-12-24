@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Supply } from './entities/supply.entity';
 import { isValidObjectId, Model } from 'mongoose';
 import { PaginationDto } from 'src/common/pipes/dto/pagination.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class SuppliesService {
@@ -14,8 +15,10 @@ export class SuppliesService {
     private readonly supplyModel: Model<Supply>
   ) { }
 
-  async create(createSupplyDto: CreateSupplyDto) {
+  async create(createSupplyDto: CreateSupplyDto, user: User) {
     //createSupplyDto.date = createSupplyDto.date.toDateString();
+    createSupplyDto.user_id = user.id
+
     try{
       const supply = await this.supplyModel.create(createSupplyDto);
       return supply;

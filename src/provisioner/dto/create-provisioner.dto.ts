@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from "class-validator";
+import { Types } from "mongoose";
 
 class ContactDto{
     @IsNumber()
@@ -21,4 +22,10 @@ export class CreateProvisionerDto {
     lastname: string;
     @IsNotEmpty()
     contact: ContactDto;
+
+    //user_id
+    @IsOptional()
+    @ValidateIf((obj, value) => typeof value === 'string' || value instanceof Types.ObjectId)
+    @IsMongoId()
+    user_id?: string | Types.ObjectId;
 }

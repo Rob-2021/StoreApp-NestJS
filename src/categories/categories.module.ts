@@ -3,6 +3,7 @@ import { CategoriesService } from './categories.service';
 import { CategoriesController } from './categories.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Category, CategorySchema } from './entities/category.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [CategoriesController],
@@ -12,6 +13,8 @@ import { Category, CategorySchema } from './entities/category.entity';
       name:Category.name,
       schema:CategorySchema
     }
-  ])]
+  ]),
+  AuthModule
+]
 })
 export class CategoriesModule {}

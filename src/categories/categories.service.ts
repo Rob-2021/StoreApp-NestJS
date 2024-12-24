@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Category } from './entities/category.entity';
 import { isValidObjectId, Model } from 'mongoose';
 import { PaginationDto } from 'src/common/pipes/dto/pagination.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class CategoriesService {
@@ -14,8 +15,10 @@ export class CategoriesService {
     private readonly categoryModel: Model<Category>
   ){}
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateCategoryDto, user:User) {
     createCategoryDto.name = createCategoryDto.name.toLocaleLowerCase();
+    createCategoryDto.user_id = user.id
+
     try {
       const category = await this.categoryModel.create(createCategoryDto);
       return category;

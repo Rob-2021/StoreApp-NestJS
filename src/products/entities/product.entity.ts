@@ -40,6 +40,14 @@ export class Product extends Document {
     //Referencia a la entidad Categoria
     @Prop({type: Types.ObjectId, ref: 'Category', required: true})
     category_id: Types.ObjectId;
+
+    //one to many relationship
+    // @Prop({type:[{type: Types.ObjectId, ref:'Category'}], default:[]})
+    // categories: Types.ObjectId;
+
+    //one to many relationship
+    // @Prop({type:[{type: Types.ObjectId, ref:'Supply'}], default:[]})
+    // supplies: Types.ObjectId;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

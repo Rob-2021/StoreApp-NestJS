@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Provisioner } from './entities/provisioner.entity';
 import { isValidObjectId, Model } from 'mongoose';
 import { PaginationDto } from 'src/common/pipes/dto/pagination.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class ProvisionerService {
@@ -14,8 +15,10 @@ export class ProvisionerService {
     private readonly provisionerModel: Model<Provisioner>
   ) { }
 
-  async create(createProvisionerDto: CreateProvisionerDto) {
+  async create(createProvisionerDto: CreateProvisionerDto, user:User) {
     createProvisionerDto.name = createProvisionerDto.name.toLocaleLowerCase();
+    createProvisionerDto.user_id = user.id
+
     try {
       const provisioner = await this.provisionerModel.create(createProvisionerDto);
       return provisioner;
